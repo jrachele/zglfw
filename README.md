@@ -12,7 +12,7 @@ pub fn build(b: *std.Build) void {
     const zglfw = b.dependency("zglfw", .{});
     exe.root_module.addImport("zglfw", zglfw.module("root"));
 
-    if (target.result.os.tag != .emscrpten) {
+    if (target.result.os.tag != .emscripten) {
         exe.linkLibrary(zglfw.artifact("glfw"));
     }
 }
@@ -26,6 +26,10 @@ pub fn main() !void {
     try glfw.init();
     defer glfw.terminate();
 
+    const window = try glfw.createWindow(600, 600, "zig-gamedev: minimal_glfw_gl", null);
+    defer glfw.destroyWindow(window);
+
+    // or, using the equivilent, encapsulated, "objecty" API:
     const window = try glfw.Window.create(600, 600, "zig-gamedev: minimal_glfw_gl", null);
     defer window.destroy();
 
